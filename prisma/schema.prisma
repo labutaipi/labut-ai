@@ -1,0 +1,99 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─────────────────────────────────────────
+// AUTENTICAÇÃO (Better Auth — não alterar)
+// ─────────────────────────────────────────
+
+model User {
+  id            String   @id @default(cuid())
+  name          String
+  email         String   @unique
+  emailVerified Boolean  @default(false)
+  image         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Dados do negócio do MEI
+  businessName String?
+  segmentSlug  String? // "salao-beleza" | "alimentacao" | ...
+  citySlug     String? // "teresina" | "parnaiba" | ...
+  plan         Plan    @default(FREE)
+
+  sessions Session[]
+  accounts Account[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Account {
+  id                   String    @id @default(cuid())
+  userId               String
+  accountId            String
+  providerId           String
+  password             String?   @db.Text
+  accessToken          String?   @db.Text
+  refreshToken         String?   @db.Text
+  accessTokenExpiresAt DateTime?
+  scope                String?   @db.Text
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([providerId, accountId])
+}
+
+model Verification {
+  id         String   @id @default(cuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+// ─────────────────────────────────────────
+// CACHE DE TENDÊNCIAS
+// Chave: segmentSlug + citySlug
+// UMA entrada serve TODOS os usuários do mesmo segmento + cidade
+// ─────────────────────────────────────────
+
+model SegmentTrendsCache {
+  id          String   @id @default(cuid())
+  segmentSlug String
+  citySlug    String
+  dataType    String // "interest_over_time" | "by_region" | "related_queries"
+  geoUsed     String // geo code usado: "BR-PI-TEI" ou "BR-PI" (fallback)
+  payload     Json
+  fetchedAt   DateTime @default(now())
+  expiresAt   DateTime // TTL: 12 horas
+
+  @@unique([segmentSlug, citySlug, dataType])
+}
+
+// ─────────────────────────────────────────
+// ENUMS
+// ─────────────────────────────────────────
+
+enum Plan {
+  FREE
+  PREMIUM
+}
