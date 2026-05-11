@@ -6,18 +6,18 @@ Plataforma de inteligência de mercado para MEIs do estado do Piauí. Exibe tend
 
 ## Stack
 
-| Camada | Tecnologia |
-|---|---|
-| Framework | TanStack Start (SSR + Vite) |
-| Autenticação | Better Auth |
-| API interna | oRPC (tipagem end-to-end) |
-| ORM | Prisma 7 |
-| Banco de dados | PostgreSQL via Docker (local) ou Neon DB (produção) |
-| Connection pooling | PgBouncer (transaction mode — igual ao Neon) |
-| Tendências | SerpAPI — Google Trends |
-| Jobs agendados | Inngest (cron a cada 12h) |
-| Estilização | Tailwind CSS v4 |
-| Validação | Zod |
+| Camada             | Tecnologia                                          |
+| ------------------ | --------------------------------------------------- |
+| Framework          | TanStack Start (SSR + Vite)                         |
+| Autenticação       | Better Auth                                         |
+| API interna        | oRPC (tipagem end-to-end)                           |
+| ORM                | Prisma 7                                            |
+| Banco de dados     | PostgreSQL via Docker (local) ou Neon DB (produção) |
+| Connection pooling | PgBouncer (transaction mode — igual ao Neon)        |
+| Tendências         | SerpAPI — Google Trends                             |
+| Jobs agendados     | Inngest (cron a cada 12h)                           |
+| Estilização        | Tailwind CSS v4                                     |
+| Validação          | Zod                                                 |
 
 ---
 
@@ -57,6 +57,7 @@ npm run db:start
 ```
 
 Isso inicia dois containers via Docker:
+
 - **PostgreSQL** na porta `5432` — conexão direta (usada para migrations)
 - **PgBouncer** na porta `6432` — connection pooling em transaction mode (usado pela aplicação)
 
@@ -78,31 +79,31 @@ Acesse em `http://localhost:3000`.
 
 ## Comandos do banco de dados
 
-| Comando | O que faz |
-|---|---|
-| `npm run db:start` | Sobe PostgreSQL + PgBouncer via Docker |
-| `npm run db:stop` | Para os containers |
-| `npm run db:reset` | Destrói e recria os containers (apaga os dados) |
-| `npm run db:push` | Aplica o schema Prisma no banco |
-| `npm run db:migrate` | Cria uma migration com nome |
-| `npm run db:generate` | Regenera o Prisma Client |
-| `npm run db:studio` | Abre o Prisma Studio no browser |
+| Comando               | O que faz                                       |
+| --------------------- | ----------------------------------------------- |
+| `npm run db:start`    | Sobe PostgreSQL + PgBouncer via Docker          |
+| `npm run db:stop`     | Para os containers                              |
+| `npm run db:reset`    | Destrói e recria os containers (apaga os dados) |
+| `npm run db:push`     | Aplica o schema Prisma no banco                 |
+| `npm run db:migrate`  | Cria uma migration com nome                     |
+| `npm run db:generate` | Regenera o Prisma Client                        |
+| `npm run db:studio`   | Abre o Prisma Studio no browser                 |
 
 ---
 
 ## Estrutura de rotas
 
-| Rota | Descrição |
-|---|---|
-| `/` | Landing page |
-| `/cadastro` | Criar conta (email + senha) |
-| `/entrar` | Login |
-| `/onboarding` | Selecionar segmento e cidade (protegido) |
-| `/dashboard` | Painel de tendências (protegido) |
-| `/dashboard/perfil` | Perfil e configurações (protegido) |
-| `/api/auth/$` | Handler do Better Auth |
-| `/api/rpc/$` | Handler do oRPC |
-| `/api/inngest` | Webhook do Inngest |
+| Rota                | Descrição                                |
+| ------------------- | ---------------------------------------- |
+| `/`                 | Landing page                             |
+| `/cadastro`         | Criar conta (email + senha)              |
+| `/entrar`           | Login                                    |
+| `/onboarding`       | Selecionar segmento e cidade (protegido) |
+| `/dashboard`        | Painel de tendências (protegido)         |
+| `/dashboard/perfil` | Perfil e configurações (protegido)       |
+| `/api/auth/$`       | Handler do Better Auth                   |
+| `/api/rpc/$`        | Handler do oRPC                          |
+| `/api/inngest`      | Webhook do Inngest                       |
 
 ---
 
