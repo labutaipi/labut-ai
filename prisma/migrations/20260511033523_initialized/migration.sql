@@ -38,6 +38,7 @@ CREATE TABLE "Account" (
     "userId" TEXT NOT NULL,
     "accountId" TEXT NOT NULL,
     "providerId" TEXT NOT NULL,
+    "password" TEXT,
     "accessToken" TEXT,
     "refreshToken" TEXT,
     "accessTokenExpiresAt" TIMESTAMP(3),

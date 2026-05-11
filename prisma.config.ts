@@ -7,7 +7,6 @@ export default defineConfig({
     seed: 'tsx prisma/seed.ts',
   },
   datasource: {
-    // Conexão direta (sem PgBouncer) — necessária para migrations e shadow database
     url: env('DIRECT_URL'),
   },
 })
