@@ -7,6 +7,9 @@ import { getCityBySlug } from '#/lib/cities'
 import TrendChart from '#/components/charts/TrendChart'
 import KpiCard from '#/components/dashboard/KpiCard'
 import RelatedQueries from '#/components/dashboard/RelatedQueries'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '#/components/ui/card'
+import { Alert, AlertDescription } from '#/components/ui/alert'
+import { Badge } from '#/components/ui/badge'
 
 export const Route = createFileRoute('/dashboard/')({
   component: DashboardPage,
@@ -48,7 +51,6 @@ function DashboardContent() {
   const timelineData = trendsData?.interest_over_time?.timeline_data ?? []
   const relatedQueries = trendsData?.related_queries?.rising ?? []
 
-  // Calcula KPIs a partir dos dados de interesse ao longo do tempo
   const values = timelineData.flatMap((d: TimelineEntry) =>
     d.values?.map((v: { extracted_value?: number }) => v.extracted_value ?? 0) ?? [],
   )
@@ -62,7 +64,7 @@ function DashboardContent() {
     <main className="page-wrap px-4 pb-12 pt-8">
       {/* Header do dashboard */}
       <div className="mb-8">
-        <p className="island-kicker mb-1">Seu painel de mercado</p>
+        <Badge variant="kicker" className="mb-1">Seu painel de mercado</Badge>
         <h1 className="text-2xl font-bold text-[var(--sea-ink)] sm:text-3xl">
           {segment.icon} {segment.label}{' '}
           <span className="text-[var(--sea-ink-soft)]">em {city.label}</span>
@@ -74,12 +76,12 @@ function DashboardContent() {
 
       {/* Aviso de fallback */}
       {showFallbackWarning && (
-        <div className="mb-6 flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800 dark:border-amber-800/40 dark:bg-amber-900/20 dark:text-amber-300">
-          <span className="mt-0.5 text-base">ℹ️</span>
-          <span>
+        <Alert variant="warning" className="mb-6">
+          <span className="text-base">ℹ️</span>
+          <AlertDescription>
             Exibindo dados do Piauí — sua cidade ainda tem poucos dados para análise individual.
-          </span>
-        </div>
+          </AlertDescription>
+        </Alert>
       )}
 
       {/* KPIs */}
@@ -106,34 +108,36 @@ function DashboardContent() {
       </div>
 
       {/* Gráfico de tendência */}
-      <div className="island-shell mb-6 rounded-2xl p-6">
-        <h2 className="mb-1 text-base font-semibold text-[var(--sea-ink)]">
-          Interesse ao longo do tempo
-        </h2>
-        <p className="mb-4 text-xs text-[var(--sea-ink-soft)]">Últimos 90 dias — escala de 0 a 100</p>
-        {timelineData.length > 0 ? (
-          <TrendChart data={timelineData} keywords={segment.keywords} />
-        ) : (
-          <div className="flex h-48 items-center justify-center text-sm text-[var(--sea-ink-soft)]">
-            Nenhum dado disponível para este período.
-          </div>
-        )}
-      </div>
+      <Card className="mb-6 gap-0 py-0">
+        <CardHeader className="px-6 pt-6 pb-0">
+          <CardTitle>Interesse ao longo do tempo</CardTitle>
+          <CardDescription>Últimos 90 dias — escala de 0 a 100</CardDescription>
+        </CardHeader>
+        <CardContent className="px-6 pb-6 pt-4">
+          {timelineData.length > 0 ? (
+            <TrendChart data={timelineData} keywords={segment.keywords} />
+          ) : (
+            <div className="flex h-48 items-center justify-center text-sm text-[var(--sea-ink-soft)]">
+              Nenhum dado disponível para este período.
+            </div>
+          )}
+        </CardContent>
+      </Card>
 
       {/* Queries relacionadas */}
-      <div className="island-shell rounded-2xl p-6">
-        <h2 className="mb-1 text-base font-semibold text-[var(--sea-ink)]">
-          O que as pessoas estão buscando
-        </h2>
-        <p className="mb-4 text-xs text-[var(--sea-ink-soft)]">
-          Buscas em alta relacionadas ao seu segmento
-        </p>
-        {relatedQueries.length > 0 ? (
-          <RelatedQueries queries={relatedQueries} />
-        ) : (
-          <p className="text-sm text-[var(--sea-ink-soft)]">Nenhuma busca relacionada encontrada.</p>
-        )}
-      </div>
+      <Card className="gap-0 py-0">
+        <CardHeader className="px-6 pt-6 pb-0">
+          <CardTitle>O que as pessoas estão buscando</CardTitle>
+          <CardDescription>Buscas em alta relacionadas ao seu segmento</CardDescription>
+        </CardHeader>
+        <CardContent className="px-6 pb-6 pt-4">
+          {relatedQueries.length > 0 ? (
+            <RelatedQueries queries={relatedQueries} />
+          ) : (
+            <p className="text-sm text-[var(--sea-ink-soft)]">Nenhuma busca relacionada encontrada.</p>
+          )}
+        </CardContent>
+      </Card>
     </main>
   )
 }
@@ -153,7 +157,6 @@ function DashboardSkeleton() {
   )
 }
 
-// Tipos locais para o payload da SerpAPI
 type TimelineEntry = {
   date?: string
   values?: Array<{ query?: string; value?: string; extracted_value?: number }>

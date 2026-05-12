@@ -1,10 +1,15 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { useSuspenseQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useSuspenseQuery, useQueryClient } from '@tanstack/react-query'
 import { Suspense, useState } from 'react'
 import { orpc, client } from '#/orpc/client'
 import { authClient } from '#/lib/auth-client'
 import { getSegmentBySlug } from '#/lib/segments'
 import { getCityBySlug } from '#/lib/cities'
+import { Button } from '#/components/ui/button'
+import { Input } from '#/components/ui/input'
+import { Label } from '#/components/ui/label'
+import { Card, CardContent, CardHeader, CardTitle } from '#/components/ui/card'
+import { Badge } from '#/components/ui/badge'
 
 export const Route = createFileRoute('/dashboard/perfil')({
   component: PerfilPage,
@@ -51,96 +56,111 @@ function PerfilContent() {
   return (
     <main className="page-wrap px-4 pb-12 pt-8">
       <div className="mb-8">
-        <p className="island-kicker mb-1">Configurações</p>
+        <Badge variant="kicker" className="mb-1">Configurações</Badge>
         <h1 className="text-2xl font-bold text-[var(--sea-ink)]">Seu perfil</h1>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
         {/* Dados pessoais */}
-        <div className="island-shell rounded-2xl p-6">
-          <h2 className="mb-4 text-base font-semibold text-[var(--sea-ink)]">Dados pessoais</h2>
-          <form onSubmit={handleSave} className="space-y-4">
-            <div>
-              <label className="mb-1.5 block text-sm font-medium text-[var(--sea-ink)]">Nome</label>
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="w-full rounded-xl border border-[var(--line)] bg-white/60 px-4 py-3 text-sm outline-none transition focus:border-[var(--lagoon-deep)] focus:ring-2 focus:ring-[var(--lagoon)]/20 dark:bg-white/5"
-              />
-            </div>
-            <div>
-              <label className="mb-1.5 block text-sm font-medium text-[var(--sea-ink)]">Nome do negócio</label>
-              <input
-                type="text"
-                value={businessName}
-                onChange={(e) => setBusinessName(e.target.value)}
-                placeholder="Ex: Salão da Maria"
-                className="w-full rounded-xl border border-[var(--line)] bg-white/60 px-4 py-3 text-sm outline-none transition focus:border-[var(--lagoon-deep)] focus:ring-2 focus:ring-[var(--lagoon)]/20 dark:bg-white/5"
-              />
-            </div>
-            <div>
-              <label className="mb-1.5 block text-sm font-medium text-[var(--sea-ink)]">E-mail</label>
-              <input
-                type="email"
-                value={user.email}
-                disabled
-                className="w-full rounded-xl border border-[var(--line)] bg-white/30 px-4 py-3 text-sm text-[var(--sea-ink-soft)] dark:bg-white/5"
-              />
-            </div>
-            <button
-              type="submit"
-              disabled={saving}
-              className="rounded-xl bg-[var(--lagoon-deep)] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[var(--palm)] disabled:opacity-60"
-            >
-              {saving ? 'Salvando...' : 'Salvar'}
-            </button>
-            {saved && (
-              <p className="text-sm text-green-600">Alterações salvas com sucesso.</p>
-            )}
-          </form>
-        </div>
+        <Card className="gap-0 py-0">
+          <CardHeader className="px-6 pt-6 pb-0">
+            <CardTitle>Dados pessoais</CardTitle>
+          </CardHeader>
+          <CardContent className="px-6 pb-6 pt-4">
+            <form onSubmit={handleSave} className="space-y-4">
+              <div className="space-y-1.5">
+                <Label htmlFor="name">Nome</Label>
+                <Input
+                  id="name"
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="h-11 rounded-xl"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="businessName">Nome do negócio</Label>
+                <Input
+                  id="businessName"
+                  type="text"
+                  value={businessName}
+                  onChange={(e) => setBusinessName(e.target.value)}
+                  placeholder="Ex: Salão da Maria"
+                  className="h-11 rounded-xl"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="email">E-mail</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={user.email}
+                  disabled
+                  className="h-11 rounded-xl"
+                />
+              </div>
+              <div className="flex items-center gap-3">
+                <Button
+                  type="submit"
+                  disabled={saving}
+                  className="rounded-xl"
+                >
+                  {saving ? 'Salvando...' : 'Salvar'}
+                </Button>
+                {saved && (
+                  <span className="text-sm text-green-600">Alterações salvas com sucesso.</span>
+                )}
+              </div>
+            </form>
+          </CardContent>
+        </Card>
 
         {/* Segmento e cidade */}
-        <div className="island-shell rounded-2xl p-6">
-          <h2 className="mb-4 text-base font-semibold text-[var(--sea-ink)]">Seu mercado</h2>
-          <div className="space-y-3">
-            <div className="flex items-center justify-between rounded-xl bg-white/40 px-4 py-3 dark:bg-white/5">
-              <span className="text-sm text-[var(--sea-ink-soft)]">Segmento</span>
-              <span className="text-sm font-medium text-[var(--sea-ink)]">
-                {segment ? `${segment.icon} ${segment.label}` : '—'}
-              </span>
+        <Card className="gap-0 py-0">
+          <CardHeader className="px-6 pt-6 pb-0">
+            <CardTitle>Seu mercado</CardTitle>
+          </CardHeader>
+          <CardContent className="px-6 pb-6 pt-4">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between rounded-xl bg-white/40 px-4 py-3 dark:bg-white/5">
+                <span className="text-sm text-[var(--sea-ink-soft)]">Segmento</span>
+                <span className="text-sm font-medium text-[var(--sea-ink)]">
+                  {segment ? `${segment.icon} ${segment.label}` : '—'}
+                </span>
+              </div>
+              <div className="flex items-center justify-between rounded-xl bg-white/40 px-4 py-3 dark:bg-white/5">
+                <span className="text-sm text-[var(--sea-ink-soft)]">Cidade</span>
+                <span className="text-sm font-medium text-[var(--sea-ink)]">
+                  {city ? city.label : '—'}
+                </span>
+              </div>
+              <div className="flex items-center justify-between rounded-xl bg-white/40 px-4 py-3 dark:bg-white/5">
+                <span className="text-sm text-[var(--sea-ink-soft)]">Plano</span>
+                <span className="text-sm font-medium text-[var(--sea-ink)]">
+                  {user.plan === 'PREMIUM' ? '⭐ Premium' : 'Gratuito'}
+                </span>
+              </div>
             </div>
-            <div className="flex items-center justify-between rounded-xl bg-white/40 px-4 py-3 dark:bg-white/5">
-              <span className="text-sm text-[var(--sea-ink-soft)]">Cidade</span>
-              <span className="text-sm font-medium text-[var(--sea-ink)]">
-                {city ? city.label : '—'}
-              </span>
-            </div>
-            <div className="flex items-center justify-between rounded-xl bg-white/40 px-4 py-3 dark:bg-white/5">
-              <span className="text-sm text-[var(--sea-ink-soft)]">Plano</span>
-              <span className="text-sm font-medium text-[var(--sea-ink)]">
-                {user.plan === 'PREMIUM' ? '⭐ Premium' : 'Gratuito'}
-              </span>
-            </div>
-          </div>
-          <button
-            onClick={() => navigate({ to: '/onboarding' })}
-            className="mt-4 text-sm text-[var(--lagoon-deep)] underline-offset-2 hover:underline"
-          >
-            Alterar segmento ou cidade
-          </button>
-        </div>
+            <Button
+              variant="link"
+              onClick={() => navigate({ to: '/onboarding' })}
+              className="mt-4 px-0 text-sm h-auto"
+            >
+              Alterar segmento ou cidade
+            </Button>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Sair */}
       <div className="mt-8 border-t border-[var(--line)] pt-8">
-        <button
+        <Button
+          variant="outline"
           onClick={handleSignOut}
-          className="rounded-xl border border-[var(--line)] px-5 py-2.5 text-sm font-medium text-[var(--sea-ink-soft)] transition hover:border-red-300 hover:text-red-600"
+          className="rounded-xl hover:border-red-300 hover:text-red-600"
         >
           Sair da conta
-        </button>
+        </Button>
       </div>
     </main>
   )

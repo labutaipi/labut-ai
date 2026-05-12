@@ -6,6 +6,12 @@ import SegmentPicker from '#/components/onboarding/SegmentPicker'
 import CityPicker from '#/components/onboarding/CityPicker'
 import type { SegmentSlug } from '#/lib/segments'
 import type { CitySlug } from '#/lib/cities'
+import { Button } from '#/components/ui/button'
+import { Input } from '#/components/ui/input'
+import { Label } from '#/components/ui/label'
+import { Alert, AlertDescription } from '#/components/ui/alert'
+import { Badge } from '#/components/ui/badge'
+import { cn } from '#/lib/utils'
 
 export const Route = createFileRoute('/onboarding')({
   beforeLoad: async () => {
@@ -48,16 +54,22 @@ function Onboarding() {
         {/* Progress */}
         <div className="mb-8 flex items-center gap-3">
           <div
-            className={`h-2 flex-1 rounded-full transition-all ${step >= 1 ? 'bg-[var(--lagoon-deep)]' : 'bg-[var(--line)]'}`}
+            className={cn(
+              'h-2 flex-1 rounded-full transition-all',
+              step >= 1 ? 'bg-[var(--lagoon-deep)]' : 'bg-[var(--line)]',
+            )}
           />
           <div
-            className={`h-2 flex-1 rounded-full transition-all ${step >= 2 ? 'bg-[var(--lagoon-deep)]' : 'bg-[var(--line)]'}`}
+            className={cn(
+              'h-2 flex-1 rounded-full transition-all',
+              step >= 2 ? 'bg-[var(--lagoon-deep)]' : 'bg-[var(--line)]',
+            )}
           />
         </div>
 
         {step === 1 && (
           <div>
-            <p className="island-kicker mb-3">Passo 1 de 2</p>
+            <Badge variant="kicker" className="mb-3">Passo 1 de 2</Badge>
             <h1 className="display-title mb-2 text-3xl font-bold text-[var(--sea-ink)]">
               Qual é o seu segmento?
             </h1>
@@ -67,19 +79,19 @@ function Onboarding() {
 
             <SegmentPicker selected={segmentSlug} onSelect={setSegmentSlug} />
 
-            <button
+            <Button
               onClick={() => segmentSlug && setStep(2)}
               disabled={!segmentSlug}
-              className="mt-8 w-full rounded-xl bg-[var(--lagoon-deep)] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[var(--palm)] disabled:cursor-not-allowed disabled:opacity-40"
+              className="mt-8 w-full h-11 rounded-xl"
             >
               Continuar
-            </button>
+            </Button>
           </div>
         )}
 
         {step === 2 && (
           <div>
-            <p className="island-kicker mb-3">Passo 2 de 2</p>
+            <Badge variant="kicker" className="mb-3">Passo 2 de 2</Badge>
             <h1 className="display-title mb-2 text-3xl font-bold text-[var(--sea-ink)]">
               Em qual cidade você atende?
             </h1>
@@ -87,41 +99,41 @@ function Onboarding() {
               Vamos mostrar as tendências da sua cidade no Piauí.
             </p>
 
-            <div className="mb-6">
-              <label className="mb-1.5 block text-sm font-medium text-[var(--sea-ink)]">
-                Nome do seu negócio (opcional)
-              </label>
-              <input
+            <div className="mb-6 space-y-1.5">
+              <Label htmlFor="businessName">Nome do seu negócio (opcional)</Label>
+              <Input
+                id="businessName"
                 type="text"
                 value={businessName}
                 onChange={(e) => setBusinessName(e.target.value)}
                 placeholder="Ex: Salão da Maria"
-                className="w-full rounded-xl border border-[var(--line)] bg-white/60 px-4 py-3 text-sm text-[var(--sea-ink)] placeholder-[var(--sea-ink-soft)] outline-none transition focus:border-[var(--lagoon-deep)] focus:ring-2 focus:ring-[var(--lagoon)]/20 dark:bg-white/5"
+                className="h-11 rounded-xl"
               />
             </div>
 
             <CityPicker selected={citySlug} onSelect={setCitySlug} />
 
             {error && (
-              <p className="mt-4 rounded-lg bg-red-50 px-4 py-2.5 text-sm text-red-600 dark:bg-red-900/20 dark:text-red-400">
-                {error}
-              </p>
+              <Alert variant="destructive" className="mt-4">
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
             )}
 
             <div className="mt-8 flex gap-3">
-              <button
+              <Button
+                variant="outline"
                 onClick={() => setStep(1)}
-                className="rounded-xl border border-[var(--line)] px-6 py-3 text-sm font-medium text-[var(--sea-ink)] transition hover:bg-white/60"
+                className="rounded-xl h-11"
               >
                 Voltar
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={handleFinish}
                 disabled={!citySlug || loading}
-                className="flex-1 rounded-xl bg-[var(--lagoon-deep)] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[var(--palm)] disabled:cursor-not-allowed disabled:opacity-40"
+                className="flex-1 h-11 rounded-xl"
               >
                 {loading ? 'Salvando...' : 'Ver meu painel'}
-              </button>
+              </Button>
             </div>
           </div>
         )}

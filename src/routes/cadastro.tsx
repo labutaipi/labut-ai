@@ -1,6 +1,12 @@
 import { createFileRoute, useNavigate, Link } from '@tanstack/react-router'
 import { useState } from 'react'
 import { authClient } from '#/lib/auth-client'
+import { Button } from '#/components/ui/button'
+import { Input } from '#/components/ui/input'
+import { Label } from '#/components/ui/label'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '#/components/ui/card'
+import { Alert, AlertDescription } from '#/components/ui/alert'
+import { Badge } from '#/components/ui/badge'
 
 export const Route = createFileRoute('/cadastro')({
   component: Cadastro,
@@ -39,83 +45,84 @@ function Cadastro() {
 
   return (
     <main className="page-wrap flex min-h-[80vh] items-center justify-center px-4 py-12">
-      <div className="island-shell w-full max-w-md rounded-2xl p-8">
-        <div className="mb-8 text-center">
-          <p className="island-kicker mb-2">Labut AI</p>
-          <h1 className="display-title text-3xl font-bold text-[var(--sea-ink)]">
-            Crie sua conta
-          </h1>
-          <p className="mt-2 text-sm text-[var(--sea-ink-soft)]">
-            Inteligência de mercado para o seu negócio no Piauí
+      <Card className="w-full max-w-md gap-0 py-0">
+        <CardHeader className="px-8 pt-8 pb-0">
+          <div className="mb-2 text-center">
+            <Badge variant="kicker" className="mb-3">Labut AI</Badge>
+            <CardTitle className="display-title text-3xl font-bold text-(--sea-ink)">
+              Crie sua conta
+            </CardTitle>
+            <CardDescription className="mt-2">
+              Inteligência de mercado para o seu negócio no Piauí
+            </CardDescription>
+          </div>
+        </CardHeader>
+
+        <CardContent className="px-8 pt-6 pb-8">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-1.5">
+              <Label htmlFor="name">Seu nome</Label>
+              <Input
+                id="name"
+                type="text"
+                required
+                value={form.name}
+                onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
+                placeholder="Maria Silva"
+                className="h-11 rounded-xl"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <Label htmlFor="email">E-mail</Label>
+              <Input
+                id="email"
+                type="email"
+                required
+                value={form.email}
+                onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
+                placeholder="maria@exemplo.com"
+                className="h-11 rounded-xl"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <Label htmlFor="password">Senha</Label>
+              <Input
+                id="password"
+                type="password"
+                required
+                minLength={8}
+                value={form.password}
+                onChange={(e) => setForm((f) => ({ ...f, password: e.target.value }))}
+                placeholder="Mínimo 8 caracteres"
+                className="h-11 rounded-xl"
+              />
+            </div>
+
+            {error && (
+              <Alert variant="destructive">
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )}
+
+            <Button
+              type="submit"
+              disabled={loading}
+              className="w-full h-11 rounded-xl"
+            >
+              {loading ? 'Criando conta...' : 'Criar conta grátis'}
+            </Button>
+          </form>
+
+          <p className="mt-6 text-center text-sm text-(--sea-ink-soft)">
+            Já tem conta?{' '}
+            <Link to="/entrar" className="font-medium text-(--lagoon-deep)">
+              Entrar
+            </Link>
           </p>
-        </div>
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="mb-1.5 block text-sm font-medium text-[var(--sea-ink)]">
-              Seu nome
-            </label>
-            <input
-              type="text"
-              required
-              value={form.name}
-              onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
-              placeholder="Maria Silva"
-              className="w-full rounded-xl border border-[var(--line)] bg-white/60 px-4 py-3 text-sm text-[var(--sea-ink)] placeholder-[var(--sea-ink-soft)] outline-none transition focus:border-[var(--lagoon-deep)] focus:ring-2 focus:ring-[var(--lagoon)]/20 dark:bg-white/5"
-            />
-          </div>
-
-          <div>
-            <label className="mb-1.5 block text-sm font-medium text-[var(--sea-ink)]">
-              E-mail
-            </label>
-            <input
-              type="email"
-              required
-              value={form.email}
-              onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
-              placeholder="maria@exemplo.com"
-              className="w-full rounded-xl border border-[var(--line)] bg-white/60 px-4 py-3 text-sm text-[var(--sea-ink)] placeholder-[var(--sea-ink-soft)] outline-none transition focus:border-[var(--lagoon-deep)] focus:ring-2 focus:ring-[var(--lagoon)]/20 dark:bg-white/5"
-            />
-          </div>
-
-          <div>
-            <label className="mb-1.5 block text-sm font-medium text-[var(--sea-ink)]">
-              Senha
-            </label>
-            <input
-              type="password"
-              required
-              minLength={8}
-              value={form.password}
-              onChange={(e) => setForm((f) => ({ ...f, password: e.target.value }))}
-              placeholder="Mínimo 8 caracteres"
-              className="w-full rounded-xl border border-[var(--line)] bg-white/60 px-4 py-3 text-sm text-[var(--sea-ink)] placeholder-[var(--sea-ink-soft)] outline-none transition focus:border-[var(--lagoon-deep)] focus:ring-2 focus:ring-[var(--lagoon)]/20 dark:bg-white/5"
-            />
-          </div>
-
-          {error && (
-            <p className="rounded-lg bg-red-50 px-4 py-2.5 text-sm text-red-600 dark:bg-red-900/20 dark:text-red-400">
-              {error}
-            </p>
-          )}
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full rounded-xl bg-[var(--lagoon-deep)] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[var(--palm)] disabled:opacity-60"
-          >
-            {loading ? 'Criando conta...' : 'Criar conta grátis'}
-          </button>
-        </form>
-
-        <p className="mt-6 text-center text-sm text-[var(--sea-ink-soft)]">
-          Já tem conta?{' '}
-          <Link to="/entrar" className="font-medium text-[var(--lagoon-deep)]">
-            Entrar
-          </Link>
-        </p>
-      </div>
+        </CardContent>
+      </Card>
     </main>
   )
 }

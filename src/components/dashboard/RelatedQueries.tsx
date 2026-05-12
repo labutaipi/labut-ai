@@ -1,3 +1,5 @@
+import { Badge } from '#/components/ui/badge'
+
 type Query = {
   query?: string
   value?: string
@@ -18,9 +20,9 @@ export default function RelatedQueries({ queries }: RelatedQueriesProps) {
         >
           <span className="text-sm font-medium text-[var(--sea-ink)]">{q.query}</span>
           {q.value && (
-            <span className="ml-3 shrink-0 rounded-full bg-[rgba(79,184,178,0.14)] px-2.5 py-0.5 text-xs font-semibold text-[var(--lagoon-deep)]">
+            <Badge variant="lagoon" className="ml-3 shrink-0">
               {q.value === 'Breakout' ? '🔥 Explosão' : `+${q.value}%`}
-            </span>
+            </Badge>
           )}
         </li>
       ))}

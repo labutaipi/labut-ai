@@ -1,5 +1,3 @@
-'use client'
-
 import {
   LineChart,
   Line,
@@ -85,7 +83,6 @@ export default function TrendChart({ data, keywords }: TrendChartProps) {
 
 function formatDate(dateStr: string) {
   if (!dateStr) return ''
-  // SerpAPI returns dates like "Nov 10 – 16, 2024" or ISO-like strings
   const parts = dateStr.split('–')
   return parts[0]?.trim().slice(0, 6) ?? dateStr
 }
