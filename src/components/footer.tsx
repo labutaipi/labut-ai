@@ -14,8 +14,8 @@ export function Footer() {
         </div>
         <div className="flex items-center gap-6 text-sm">
           <Link to="/" className="no-underline hover:text-(--sea-ink)">Início</Link>
-          <Link to="/cadastro" className="no-underline hover:text-(--sea-ink)">Criar conta</Link>
-          <Link to="/entrar" className="no-underline hover:text-(--sea-ink)">Entrar</Link>
+          <Link to="/sign-up" className="no-underline hover:text-(--sea-ink)">Criar conta</Link>
+          <Link to="/sign-in" className="no-underline hover:text-(--sea-ink)">Entrar</Link>
         </div>
       </div>
     </footer>

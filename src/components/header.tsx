@@ -48,10 +48,10 @@ export function Header() {
           ) : (
             <div className="flex items-center gap-2">
               <Button variant="outline" size="sm" asChild className="rounded-full">
-                <Link to="/login">Entrar</Link>
+                <Link to="/sign-in">Entrar</Link>
               </Button>
               <Button size="sm" asChild className="rounded-full">
-                <Link to="/login" >Criar conta</Link>
+                <Link to="/sign-up" >Criar conta</Link>
               </Button>
             </div>
           )}
