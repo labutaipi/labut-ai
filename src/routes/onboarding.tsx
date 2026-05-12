@@ -16,7 +16,7 @@ import { cn } from '#/lib/utils'
 export const Route = createFileRoute('/onboarding')({
   beforeLoad: async () => {
     const { data: session } = await authClient.getSession()
-    if (!session) throw redirect({ to: '/cadastro' })
+    if (!session) throw redirect({ to: '/sign-in' })
   },
   component: Onboarding,
 })
@@ -56,13 +56,13 @@ function Onboarding() {
           <div
             className={cn(
               'h-2 flex-1 rounded-full transition-all',
-              step >= 1 ? 'bg-[var(--lagoon-deep)]' : 'bg-[var(--line)]',
+              step >= 1 ? 'bg-(--lagoon-deep)' : 'bg-(--line)',
             )}
           />
-          <div
+          <div  
             className={cn(
               'h-2 flex-1 rounded-full transition-all',
-              step >= 2 ? 'bg-[var(--lagoon-deep)]' : 'bg-[var(--line)]',
+              step >= 2 ? 'bg-(--lagoon-deep)' : 'bg-(--line)',
             )}
           />
         </div>
@@ -70,10 +70,10 @@ function Onboarding() {
         {step === 1 && (
           <div>
             <Badge variant="kicker" className="mb-3">Passo 1 de 2</Badge>
-            <h1 className="display-title mb-2 text-3xl font-bold text-[var(--sea-ink)]">
+            <h1 className="display-title mb-2 text-3xl font-bold text-(--sea-ink)">
               Qual é o seu segmento?
             </h1>
-            <p className="mb-8 text-[var(--sea-ink-soft)]">
+            <p className="mb-8 text-(--sea-ink-soft)">
               Escolha a área do seu negócio para ver as tendências certas.
             </p>
 
@@ -92,10 +92,10 @@ function Onboarding() {
         {step === 2 && (
           <div>
             <Badge variant="kicker" className="mb-3">Passo 2 de 2</Badge>
-            <h1 className="display-title mb-2 text-3xl font-bold text-[var(--sea-ink)]">
+            <h1 className="display-title mb-2 text-3xl font-bold text-(--sea-ink)">
               Em qual cidade você atende?
             </h1>
-            <p className="mb-8 text-[var(--sea-ink-soft)]">
+            <p className="mb-8 text-(--sea-ink-soft)">
               Vamos mostrar as tendências da sua cidade no Piauí.
             </p>
 

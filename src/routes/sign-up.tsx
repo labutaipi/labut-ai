@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '#/com
 import { Alert, AlertDescription } from '#/components/ui/alert'
 import { Badge } from '#/components/ui/badge'
 
-export const Route = createFileRoute('/cadastro')({
+export const Route = createFileRoute('/sign-up')({
   component: Cadastro,
 })
 
@@ -117,7 +117,7 @@ function Cadastro() {
 
           <p className="mt-6 text-center text-sm text-(--sea-ink-soft)">
             Já tem conta?{' '}
-            <Link to="/entrar" className="font-medium text-(--lagoon-deep)">
+            <Link to="/sign-in" className="font-medium text-(--lagoon-deep)">
               Entrar
             </Link>
           </p>

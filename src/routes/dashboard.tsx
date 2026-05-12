@@ -4,7 +4,7 @@ import { authClient } from '#/lib/auth-client'
 export const Route = createFileRoute('/dashboard')({
   beforeLoad: async () => {
     const { data: session } = await authClient.getSession()
-    if (!session) throw redirect({ to: '/entrar' })
+    if (!session) throw redirect({ to: '/sign-in' })
   },
   component: DashboardLayout,
 })

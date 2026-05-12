@@ -13,4 +13,11 @@ export const auth = betterAuth({
     updateAge: 60 * 60 * 24,
   },
   plugins: [tanstackStartCookies()],
+  socialProviders: {
+        google: { 
+            clientId: process.env.GOOGLE_CLIENT_ID as string, 
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET as string, 
+        }, 
+    },
+
 })

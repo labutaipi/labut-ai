@@ -9,10 +9,10 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SignUpRouteImport } from './routes/sign-up'
+import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
-import { Route as EntrarRouteImport } from './routes/entrar'
 import { Route as DashboardRouteImport } from './routes/dashboard'
-import { Route as CadastroRouteImport } from './routes/cadastro'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
@@ -26,24 +26,24 @@ import { Route as ApiSplatRouteImport } from './routes/api.$'
 import { Route as ApiRpcSplatRouteImport } from './routes/api.rpc.$'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 
+const SignUpRoute = SignUpRouteImport.update({
+  id: '/sign-up',
+  path: '/sign-up',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SignInRoute = SignInRouteImport.update({
+  id: '/sign-in',
+  path: '/sign-in',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OnboardingRoute = OnboardingRouteImport.update({
   id: '/onboarding',
   path: '/onboarding',
   getParentRoute: () => rootRouteImport,
 } as any)
-const EntrarRoute = EntrarRouteImport.update({
-  id: '/entrar',
-  path: '/entrar',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const DashboardRoute = DashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CadastroRoute = CadastroRouteImport.update({
-  id: '/cadastro',
-  path: '/cadastro',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -110,10 +110,10 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/cadastro': typeof CadastroRoute
   '/dashboard': typeof DashboardRouteWithChildren
-  '/entrar': typeof EntrarRoute
   '/onboarding': typeof OnboardingRoute
+  '/sign-in': typeof SignInRoute
+  '/sign-up': typeof SignUpRoute
   '/api/$': typeof ApiSplatRoute
   '/api/inngest': typeof ApiInngestRoute
   '/dashboard/perfil': typeof DashboardPerfilRoute
@@ -128,9 +128,9 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/cadastro': typeof CadastroRoute
-  '/entrar': typeof EntrarRoute
   '/onboarding': typeof OnboardingRoute
+  '/sign-in': typeof SignInRoute
+  '/sign-up': typeof SignUpRoute
   '/api/$': typeof ApiSplatRoute
   '/api/inngest': typeof ApiInngestRoute
   '/dashboard/perfil': typeof DashboardPerfilRoute
@@ -146,10 +146,10 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/cadastro': typeof CadastroRoute
   '/dashboard': typeof DashboardRouteWithChildren
-  '/entrar': typeof EntrarRoute
   '/onboarding': typeof OnboardingRoute
+  '/sign-in': typeof SignInRoute
+  '/sign-up': typeof SignUpRoute
   '/api/$': typeof ApiSplatRoute
   '/api/inngest': typeof ApiInngestRoute
   '/dashboard/perfil': typeof DashboardPerfilRoute
@@ -166,10 +166,10 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
-    | '/cadastro'
     | '/dashboard'
-    | '/entrar'
     | '/onboarding'
+    | '/sign-in'
+    | '/sign-up'
     | '/api/$'
     | '/api/inngest'
     | '/dashboard/perfil'
@@ -184,9 +184,9 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
-    | '/cadastro'
-    | '/entrar'
     | '/onboarding'
+    | '/sign-in'
+    | '/sign-up'
     | '/api/$'
     | '/api/inngest'
     | '/dashboard/perfil'
@@ -201,10 +201,10 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
-    | '/cadastro'
     | '/dashboard'
-    | '/entrar'
     | '/onboarding'
+    | '/sign-in'
+    | '/sign-up'
     | '/api/$'
     | '/api/inngest'
     | '/dashboard/perfil'
@@ -220,10 +220,10 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
-  CadastroRoute: typeof CadastroRoute
   DashboardRoute: typeof DashboardRouteWithChildren
-  EntrarRoute: typeof EntrarRoute
   OnboardingRoute: typeof OnboardingRoute
+  SignInRoute: typeof SignInRoute
+  SignUpRoute: typeof SignUpRoute
   ApiSplatRoute: typeof ApiSplatRoute
   ApiInngestRoute: typeof ApiInngestRoute
   DemoBetterAuthRoute: typeof DemoBetterAuthRoute
@@ -236,6 +236,20 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sign-up': {
+      id: '/sign-up'
+      path: '/sign-up'
+      fullPath: '/sign-up'
+      preLoaderRoute: typeof SignUpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sign-in': {
+      id: '/sign-in'
+      path: '/sign-in'
+      fullPath: '/sign-in'
+      preLoaderRoute: typeof SignInRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/onboarding': {
       id: '/onboarding'
       path: '/onboarding'
@@ -243,25 +257,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OnboardingRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/entrar': {
-      id: '/entrar'
-      path: '/entrar'
-      fullPath: '/entrar'
-      preLoaderRoute: typeof EntrarRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/dashboard': {
       id: '/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof DashboardRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/cadastro': {
-      id: '/cadastro'
-      path: '/cadastro'
-      fullPath: '/cadastro'
-      preLoaderRoute: typeof CadastroRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -368,10 +368,10 @@ const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
-  CadastroRoute: CadastroRoute,
   DashboardRoute: DashboardRouteWithChildren,
-  EntrarRoute: EntrarRoute,
   OnboardingRoute: OnboardingRoute,
+  SignInRoute: SignInRoute,
+  SignUpRoute: SignUpRoute,
   ApiSplatRoute: ApiSplatRoute,
   ApiInngestRoute: ApiInngestRoute,
   DemoBetterAuthRoute: DemoBetterAuthRoute,

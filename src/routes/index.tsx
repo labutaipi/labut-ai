@@ -50,10 +50,10 @@ function LandingPage() {
           ) : (
             <>
               <Button asChild size="lg" className="rounded-full">
-                <Link to="/cadastro">Criar conta grátis</Link>
+                <Link to="/sign-up">Criar conta grátis</Link>
               </Button>
               <Button asChild variant="outline" size="lg" className="rounded-full">
-                <Link to="/entrar">Já tenho conta</Link>
+                <Link to="/sign-in">Já tenho conta</Link>
               </Button>
             </>
           )}
@@ -109,7 +109,7 @@ function LandingPage() {
             Mais de 15 cidades do Piauí. Dados atualizados duas vezes por dia.
           </p>
           <Button asChild size="lg" className="rounded-full px-8">
-            <Link to="/cadastro">Começar agora — é grátis</Link>
+            <Link to="/sign-up">Começar agora — é grátis</Link>
           </Button>
         </section>
       )}
