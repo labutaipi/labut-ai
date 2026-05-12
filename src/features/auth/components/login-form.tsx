@@ -14,9 +14,10 @@ import {
   FieldLabel,
   FieldDescription
 } from '@/components/ui/field' 
-import { useNavigate } from "@tanstack/react-router"
+import { Link, useNavigate } from "@tanstack/react-router"
 import { useState } from "react"
 import { authClient } from "#/lib/auth-client"
+import { toast } from "sonner"
 
 export function LoginForm({
   className,
@@ -50,6 +51,7 @@ const signInWithGoogle = async () => {
     
           if (result.error) {
             console.log('Error ao fazer login', result)
+            toast.error("Credenciais inválidas.")
             return
           }
     setForm({
@@ -104,7 +106,7 @@ const signInWithGoogle = async () => {
                   Login com Google
                 </Button>
                 <FieldDescription className="text-center">
-                  Não tem uma conta? <a href="#">Crie uma conta</a>
+                  Não tem uma conta? <Link to="/sign-up" className="no-underline hover:text-(--sea-ink)">Crie uma conta</Link>
                 </FieldDescription>
               </Field>
             </FieldGroup>
