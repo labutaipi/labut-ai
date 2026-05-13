@@ -68,7 +68,7 @@ const signInWithGoogle = async () => {
     
 
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div className={cn("flex flex-col gap-6 bg-foreground/10 rounded-2xl", className)} {...props}>
       <Card  >
         <CardHeader>
           <CardTitle>Login</CardTitle>
