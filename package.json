@@ -36,6 +36,7 @@
     "@radix-ui/react-label": "^2.1.8",
     "@radix-ui/react-slot": "^1.2.4",
     "@tailwindcss/vite": "^4.3.0",
+    "@tanstack/ai": "^0.16.0",
     "@tanstack/ai-ollama": "^0.6.13",
     "@tanstack/react-devtools": "latest",
     "@tanstack/react-query": "latest",

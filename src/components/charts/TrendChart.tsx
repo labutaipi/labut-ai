@@ -42,11 +42,21 @@ export default function TrendChart({ data, keywords }: TrendChartProps) {
     ]),
   ) satisfies ChartConfig
 
+  const visibleSet = new Set(visibleKeywords)
+
   const chartData = data.map((entry) => {
     const point: Record<string, unknown> = { date: formatDate(entry.date ?? '') }
-    entry.values?.forEach((v, i) => {
-      point[visibleKeywords[i] ?? `kw${i}`] = v.extracted_value ?? 0
+
+    // Initialize all keywords to 0 so absent entries don't show undefined
+    visibleKeywords.forEach((kw) => { point[kw] = 0 })
+
+    // Map by v.query so values are matched to the correct keyword regardless of order
+    entry.values?.forEach((v) => {
+      if (v.query && visibleSet.has(v.query)) {
+        point[v.query] = v.extracted_value ?? 0
+      }
     })
+
     return point
   })
 
