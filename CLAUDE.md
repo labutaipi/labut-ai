@@ -698,3 +698,5 @@ INNGEST_SIGNING_KEY= # Chave de assinatura do webhook Inngest
 **Escopo geográfico fixo: Piauí.** Não há `state` como variável. O estado é sempre PI. A variável geográfica do usuário é `citySlug`, sempre uma das cidades de `lib/cities.ts`.
 
 **LGPD:** A plataforma é "Operadora" de dados, o MEI é o "Controlador". Implementar endpoint de exclusão de conta que apague todos os dados do usuário.
+
+**Nunca executar `pnpm db:push`.** Alterações no schema Prisma devem sempre gerar uma migration explícita via `pnpm prisma migrate dev` (desenvolvimento) ou `pnpm prisma migrate deploy` (produção). O comando `pnpm db:push` sobrescreve o banco sem histórico de migration e pode causar perda irreversível de dados. Se precisar inspecionar o estado do schema, use `pnpm prisma studio` ou leia `prisma/schema.prisma` diretamente.

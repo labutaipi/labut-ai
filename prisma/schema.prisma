@@ -51,6 +51,7 @@ model Account {
   password             String?   @db.Text
   accessToken          String?   @db.Text
   refreshToken         String?   @db.Text
+  idToken              String?   @db.Text
   accessTokenExpiresAt DateTime?
   scope                String?   @db.Text
   createdAt            DateTime  @default(now())

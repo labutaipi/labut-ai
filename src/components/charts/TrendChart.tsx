@@ -1,12 +1,18 @@
 import {
-  LineChart,
-  Line,
+  Area,
+  AreaChart,
+  CartesianGrid,
   XAxis,
   YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  CartesianGrid,
 } from 'recharts'
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  ChartLegend,
+  ChartLegendContent,
+  type ChartConfig,
+} from '#/components/ui/chart'
 
 type TimelineValue = {
   query?: string
@@ -27,57 +33,73 @@ interface TrendChartProps {
 const COLORS = ['#328f97', '#16A34A', '#EA580C', '#6B7280', '#DC2626']
 
 export default function TrendChart({ data, keywords }: TrendChartProps) {
+  const visibleKeywords = keywords.slice(0, 5)
+
+  const chartConfig = Object.fromEntries(
+    visibleKeywords.map((kw, i) => [
+      kw,
+      { label: kw, color: COLORS[i % COLORS.length] },
+    ]),
+  ) satisfies ChartConfig
+
   const chartData = data.map((entry) => {
     const point: Record<string, unknown> = { date: formatDate(entry.date ?? '') }
     entry.values?.forEach((v, i) => {
-      point[keywords[i] ?? `kw${i}`] = v.extracted_value ?? 0
+      point[visibleKeywords[i] ?? `kw${i}`] = v.extracted_value ?? 0
     })
     return point
   })
 
-  const visibleKeywords = keywords.slice(0, 5)
-
   return (
-    <div className="h-56 w-full sm:h-72">
-      <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={chartData} margin={{ top: 4, right: 4, bottom: 0, left: -20 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="rgba(23,58,64,0.08)" />
-          <XAxis
-            dataKey="date"
-            tick={{ fontSize: 11, fill: '#416166' }}
-            tickLine={false}
-            axisLine={false}
-            interval="preserveStartEnd"
-          />
-          <YAxis
-            tick={{ fontSize: 11, fill: '#416166' }}
-            tickLine={false}
-            axisLine={false}
-            domain={[0, 100]}
-          />
-          <Tooltip
-            contentStyle={{
-              background: 'rgba(255,255,255,0.95)',
-              border: '1px solid rgba(23,58,64,0.14)',
-              borderRadius: 12,
-              fontSize: 12,
-            }}
-            labelStyle={{ color: '#173a40', fontWeight: 600, marginBottom: 4 }}
-          />
+    <ChartContainer config={chartConfig} className="h-56 w-full sm:h-72">
+      <AreaChart data={chartData} margin={{ top: 4, right: 4, bottom: 0, left: -20 }}>
+        <defs>
           {visibleKeywords.map((kw, i) => (
-            <Line
-              key={kw}
-              type="monotone"
-              dataKey={kw}
-              stroke={COLORS[i % COLORS.length]}
-              strokeWidth={2}
-              dot={false}
-              activeDot={{ r: 4 }}
-            />
+            <linearGradient key={kw} id={`gradient-${i}`} x1="0" y1="0" x2="0" y2="1">
+              <stop
+                offset="5%"
+                stopColor={COLORS[i % COLORS.length]}
+                stopOpacity={i === 0 ? 0.2 : 0.12}
+              />
+              <stop offset="95%" stopColor={COLORS[i % COLORS.length]} stopOpacity={0} />
+            </linearGradient>
           ))}
-        </LineChart>
-      </ResponsiveContainer>
-    </div>
+        </defs>
+        <CartesianGrid strokeDasharray="3 3" stroke="rgba(23,58,64,0.08)" />
+        <XAxis
+          dataKey="date"
+          tick={{ fontSize: 11, fill: '#416166' }}
+          tickLine={false}
+          axisLine={false}
+          interval="preserveStartEnd"
+        />
+        <YAxis
+          tick={{ fontSize: 11, fill: '#416166' }}
+          tickLine={false}
+          axisLine={false}
+          domain={[0, 100]}
+        />
+        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+        <ChartTooltip
+          cursor={{ stroke: 'rgba(23,58,64,0.15)', strokeWidth: 1 }}
+          content={(props: any) => <ChartTooltipContent {...props} indicator="line" />}
+        />
+        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+        <ChartLegend content={(props: any) => <ChartLegendContent {...props} />} />
+        {visibleKeywords.map((kw, i) => (
+          <Area
+            key={kw}
+            type="monotone"
+            dataKey={kw}
+            stroke={COLORS[i % COLORS.length]}
+            strokeWidth={2}
+            fill={`url(#gradient-${i})`}
+            dot={false}
+            activeDot={{ r: 4 }}
+          />
+        ))}
+      </AreaChart>
+    </ChartContainer>
   )
 }
 
